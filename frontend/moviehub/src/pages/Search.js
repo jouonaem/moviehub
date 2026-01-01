@@ -2,7 +2,7 @@
 
 const fakeMovies = [
   { name: 'Inception', year: 2010, actors: ['Leonardo DiCaprio'] },
-  { name: 'Interstellar', year: 2014, actors: ['Matthew McConaughey'] },
+  { name: 'Interstellar', year: 2014, actors: ['Latthew McConaughey'] },
   { name: 'The Matrix', year: 1999, actors: ['Keanu Reeves'] },
 ];
 
@@ -10,48 +10,65 @@ function Search() {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
 
-  const handleChange = (e) => setSearch(e.target.value);
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setSearch(value);
+    if (value.length > 0) {
+      const filtered = fakeMovies.filter(
+        (movie) =>
+          movie.name.toLowerCase().startsWith(value.toLowerCase()) ||
+          movie.actors.some((actor) => actor.toLowerCase().startsWith(value.toLowerCase()))
+      );
+      setResults(filtered);
+    } else {
+      setResults([]);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Recherche fictive par nom de film ou d'acteur
-    const filtered = fakeMovies.filter(
-      (movie) =>
-        movie.name.toLowerCase().includes(search.toLowerCase()) ||
-        movie.actors.some((actor) => actor.toLowerCase().includes(search.toLowerCase()))
-    );
-    setResults(filtered);
+    // La recherche se fait déjà à chaque frappe
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-4">Recherche</h1>
-      <p className="text-gray-600">Cette page permettra de rechercher un film par nom ou par acteur.</p>
-      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 max-w-md mx-auto mb-6">
-        <label className="block mb-2 font-medium">Nom du film ou de l'acteur</label>
-        <input
-          type="text"
-          value={search}
-          onChange={handleChange}
-          className="w-full border px-3 py-2 rounded mb-4"
-          placeholder="Saisir le nom..."
-        />
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Rechercher</button>
-      </form>
-      {results.length > 0 && (
-        <div className="bg-white rounded-lg shadow p-6 max-w-md mx-auto">
-          <h2 className="text-xl font-semibold mb-2">Résultats :</h2>
-          <ul className="list-disc pl-6">
-            {results.map((movie) => (
-              <li key={movie.name} className="mb-1">
-                {movie.name} ({movie.year}) - Acteurs : {movie.actors.join(', ')}
-              </li>
-            ))}
-          </ul>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-100 py-10 flex items-center justify-center">
+      <div className="w-full max-w-xl mx-auto">
+        {/* Message d'accueil en haut de la page */}
+        {!search && results.length === 0 && (
+          <div className="mb-8 text-center">
+            <p className="text-indigo-700 text-lg font-medium mb-1">Bienvenue sur la page de recherche !</p>
+            <p className="text-gray-600">Saisissez le nom d'un film ou d'un acteur pour lancer une recherche dans la base de données.</p>
+          </div>
+        )}
+        <div className="bg-white/90 rounded-xl shadow p-8 mb-8 border border-gray-100">
+          <h1 className="text-2xl md:text-3xl font-bold text-indigo-800 mb-4 text-center tracking-tight">Recherche de films</h1>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            <label className="block font-medium text-indigo-700">Nom du film ou de l'acteur</label>
+            <input
+              type="text"
+              value={search}
+              onChange={handleChange}
+              className="w-full border border-indigo-100 px-4 py-2 rounded focus:outline-none focus:ring-1 focus:ring-indigo-300 text-gray-800 bg-gray-50"
+              placeholder="Saisir le nom..."
+            />
+            <button type="submit" className="bg-indigo-500 text-white px-5 py-2 rounded font-medium shadow-sm hover:bg-indigo-600 transition self-end">Rechercher</button>
+          </form>
         </div>
-      )}
-      {results.length === 0 && search && (
-        <div className="text-center text-gray-500 mt-4">Aucun résultat trouvé.</div>
-      )}
+        {results.length > 0 && (
+          <div className="grid gap-4 md:grid-cols-2">
+            {results.map((movie) => (
+              <div key={movie.name} className="bg-white rounded-lg border border-gray-100 shadow-sm p-5 flex flex-col gap-1 hover:shadow-md transition">
+                <span className="font-semibold text-indigo-700 text-lg">{movie.name}</span>
+                <span className="text-gray-500 text-sm">Année : {movie.year}</span>
+                <span className="text-gray-600 text-sm">Acteurs : {movie.actors.join(', ')}</span>
+              </div>
+            ))}
+          </div>
+        )}
+        {results.length === 0 && search && (
+          <div className="text-center text-gray-500 mt-4">Aucun résultat trouvé.</div>
+        )}
+      </div>
     </div>
   );
 }
