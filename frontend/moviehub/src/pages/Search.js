@@ -1,9 +1,9 @@
 ﻿import React, { useState } from 'react';
 
 const fakeMovies = [
-  { name: 'Inception', year: 2010, actors: ['Leonardo DiCaprio'] },
-  { name: 'Interstellar', year: 2014, actors: ['Latthew McConaughey'] },
-  { name: 'The Matrix', year: 1999, actors: ['Keanu Reeves'] },
+  { title: 'Inception', year: 2010, actors: ['Leonardo DiCaprio'], description: "Un voleur qui s'infiltre dans les rêves pour voler des secrets." },
+  { title: 'Interstellar', year: 2014, actors: ['Matthew McConaughey'], description: "Une équipe d'explorateurs voyage à travers un trou de ver dans l'espace." },
+  { title: 'The Matrix', year: 1999, actors: ['Keanu Reeves'], description: "Un hacker découvre la vraie nature de sa réalité." },
 ];
 
 function Search() {
@@ -16,7 +16,7 @@ function Search() {
     if (value.length > 0) {
       const filtered = fakeMovies.filter(
         (movie) =>
-          movie.name.toLowerCase().startsWith(value.toLowerCase()) ||
+          movie.title.toLowerCase().startsWith(value.toLowerCase()) ||
           movie.actors.some((actor) => actor.toLowerCase().startsWith(value.toLowerCase()))
       );
       setResults(filtered);
@@ -57,8 +57,8 @@ function Search() {
         {results.length > 0 && (
           <div className="grid gap-4 md:grid-cols-2">
             {results.map((movie) => (
-              <div key={movie.name} className="bg-white rounded-lg border border-gray-100 shadow-sm p-5 flex flex-col gap-1 hover:shadow-md transition">
-                <span className="font-semibold text-indigo-700 text-lg">{movie.name}</span>
+              <div key={movie.title} className="bg-white rounded-lg border border-gray-100 shadow-sm p-5 flex flex-col gap-1 hover:shadow-md transition">
+                <span className="font-semibold text-indigo-700 text-lg">{movie.title}</span>
                 <span className="text-gray-500 text-sm">Année : {movie.year}</span>
                 <span className="text-gray-600 text-sm">Acteurs : {movie.actors.join(', ')}</span>
               </div>

@@ -7,9 +7,8 @@ function MovieDetail() {
 
   // Données fictives
   const movie = {
-    name: name,
+    title: name,
     year: 2010,
-    director: 'Christopher Nolan',
     actors: ['Leonardo DiCaprio', 'Joseph Gordon-Levitt'],
     description: "Un voleur qui s'infiltre dans les rêves pour voler des secrets."
   };
@@ -23,9 +22,8 @@ function MovieDetail() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="bg-white rounded-lg shadow p-6 mb-4">
-        <h2 className="text-2xl font-bold mb-2">{movie.name}</h2>
+        <h2 className="text-2xl font-bold mb-2">{movie.title}</h2>
         <p className="text-gray-700 mb-1">Année : {movie.year}</p>
-        <p className="text-gray-700 mb-1">Réalisateur : {movie.director}</p>
         <p className="text-gray-700 mb-1">Acteurs : {movie.actors.join(', ')}</p>
         <p className="text-gray-700 mb-2">Description : {movie.description}</p>
         <button onClick={() => navigate(-1)} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Retour</button>
