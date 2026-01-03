@@ -1,0 +1,282 @@
+{
+  "info": {
+    "name": "MovieHub API",
+    "_postman_id": "moviehub-api-collection",
+    "description": "Collection complète pour tester l'API MovieHub (MongoDB + Neo4j)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "MongoDB - Movies",
+      "item": [
+        {
+          "name": "List All Movies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/movies/",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "5000",
+              "path": ["movies", ""]
+            },
+            "description": "Récupère la liste de tous les films depuis MongoDB"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Movie",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"The Dark Knight\",\n  \"year\": 2008,\n  \"actors\": [\"Christian Bale\", \"Heath Ledger\", \"Aaron Eckhart\"],\n  \"description\": \"Batman affronte le Joker, un criminel anarchiste qui veut plonger Gotham dans le chaos.\"\n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/movies/",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "5000",
+              "path": ["movies", ""]
+            },
+            "description": "Crée un nouveau film dans MongoDB"
+          },
+          "response": []
+        },
+        {
+          "name": "Search Movie by Title",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/movies/search?title=Inception",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "5000",
+              "path": ["movies", "search"],
+              "query": [
+                {
+                  "key": "title",
+                  "value": "Inception",
+                  "description": "Titre du film à rechercher"
+                }
+              ]
+            },
+            "description": "Recherche un film par son titre (case-insensitive)"
+          },
+          "response": []
+        },
+        {
+          "name": "Search Movie by Actor",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/movies/search?actor=Leonardo DiCaprio",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "5000",
+              "path": ["movies", "search"],
+              "query": [
+                {
+                  "key": "actor",
+                  "value": "Leonardo DiCaprio",
+                  "description": "Nom de l'acteur à rechercher"
+                }
+              ]
+            },
+            "description": "Recherche des films par nom d'acteur"
+          },
+          "response": []
+        },
+        {
+          "name": "Search Movie by Query",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/movies/search?query=Matrix",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "5000",
+              "path": ["movies", "search"],
+              "query": [
+                {
+                  "key": "query",
+                  "value": "Matrix",
+                  "description": "Recherche générale (titre puis acteur)"
+                }
+              ]
+            },
+            "description": "Recherche générale : cherche d'abord par titre, puis par acteur"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Movie by Title",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/movies/Inception",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "5000",
+              "path": ["movies", "Inception"]
+            },
+            "description": "Récupère un film spécifique par son titre ou ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Movie",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"year\": 2010,\n  \"description\": \"Description mise à jour du film Inception\"\n}"
+            },
+            "url": {
+              "raw": "http://127.0.0.1:5000/movies/Inception",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "5000",
+              "path": ["movies", "Inception"]
+            },
+            "description": "Met à jour les informations d'un film (titre dans l'URL)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Movie",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/movies/The Dark Knight",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "5000",
+              "path": ["movies", "The Dark Knight"]
+            },
+            "description": "Supprime un film par son titre"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Movie Titles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/movies/titles",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "5000",
+              "path": ["movies", "titles"]
+            },
+            "description": "Récupère uniquement la liste des titres de films"
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints pour gérer les films via MongoDB"
+    },
+    {
+      "name": "Neo4j - Users (À implémenter)",
+      "item": [
+        {
+          "name": "Get Users Who Rated Movie",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/users/ratings?movie=Inception",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "5000",
+              "path": ["users", "ratings"],
+              "query": [
+                {
+                  "key": "movie",
+                  "value": "Inception",
+                  "description": "Titre du film"
+                }
+              ]
+            },
+            "description": "Liste les utilisateurs qui ont noté un film spécifique"
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/users/johndoe",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "5000",
+              "path": ["users", "johndoe"]
+            },
+            "description": "Récupère les détails d'un utilisateur avec le nombre de films notés et la liste"
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints Neo4j pour gérer les utilisateurs et leurs notes (à implémenter par l'équipe Neo4j)"
+    },
+    {
+      "name": "Stats - MongoDB + Neo4j (À implémenter)",
+      "item": [
+        {
+          "name": "Get Common Movies Count",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:5000/stats/common-movies",
+              "protocol": "http",
+              "host": ["127", "0", "0", "1"],
+              "port": "5000",
+              "path": ["stats", "common-movies"]
+            },
+            "description": "Retourne le nombre de films communs entre MongoDB et Neo4j"
+          },
+          "response": []
+        }
+      ],
+      "description": "Endpoints mixtes utilisant MongoDB et Neo4j"
+    },
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:5000/",
+          "protocol": "http",
+          "host": ["127", "0", "0", "1"],
+          "port": "5000",
+          "path": [""]
+        },
+        "description": "Vérifie que l'API est en ligne"
+      },
+      "response": []
+    }
+  ]
+}
