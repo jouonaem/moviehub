@@ -55,8 +55,79 @@ This project is a RESTful API built with FastAPI and Flask (Python) designed to 
 
 ---
 
+## 🛠️ Installation & Setup
+
+### Prerequisites
+- Python 3.8+
+- MongoDB (local or Atlas)
+- Neo4j (local or sandbox)
+
+### Installation Steps
+
+1. **Clone the repository**
+```bash
+git clone <repository-url>
+cd moviehub
+```
+
+2. **Install dependencies**
+```bash
+cd backend
+pip install -r requirements.txt
+```
+
+3. **Configure environment variables**
+
+Create a `.env` file in the `backend/` directory:
+```env
+MONGO_URI=mongodb://localhost:27017/
+NEO4J_URI=bolt://localhost:7687
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=your_password
+```
+
+4. **Run the application**
+```bash
+cd backend
+export FLASK_APP=app.main  # Linux/Mac
+# OR
+set FLASK_APP=app.main     # Windows CMD
+# OR
+$env:FLASK_APP = "app.main"  # Windows PowerShell
+
+flask run
+```
+
+The API will be available at `http://127.0.0.1:5000`
+
+---
+
+## 📡 API Endpoints
+
+### MongoDB Endpoints (Movies)
+
+| Method | Endpoint | Description | Parameters |
+|--------|----------|-------------|------------|
+| GET | `/movies/` | List all movies | - |
+| POST | `/movies/` | Create a new movie | Body: `{title, year, actors, description}` |
+| GET | `/movies/search` | Search movies | `?query=` or `?title=` or `?actor=` |
+| GET | `/movies/<identifier>` | Get specific movie | By ID or title |
+| PUT | `/movies/<identifier>` | Update movie | By title, Body: movie data |
+| DELETE | `/movies/<identifier>` | Delete movie | By title |
+| GET | `/movies/titles` | Get all movie titles | - |
+
+### Neo4j Endpoints (Users & Ratings)
+*To be implemented by team member*
+
+### Mixed Endpoints (MongoDB + Neo4j)
+*To be implemented together*
+
+---
+
 ## 📄 API Documentation
 
-Once the API is running, interactive documentation is available at:
+Once the API is running, you can test the endpoints using:
 
-- FastAPI Swagger UI: `/docs`
+- **Postman**: Import the collection (to be created)
+- **cURL**: Command-line testing
+- **Browser**: For GET requests
