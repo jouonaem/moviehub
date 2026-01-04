@@ -1,4 +1,4 @@
-from app.neo4j import neo4j_conn
+from app.config.neo4j_client import neo4j_conn
 
 def get_users_who_rated_movie(movie_title):
     query = """
