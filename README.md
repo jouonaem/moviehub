@@ -143,7 +143,14 @@ Voir `mongodb_dump/README.md` pour plus de détails.
 | GET | `/movies/titles` | Get all movie titles | - |
 
 ### Neo4j Endpoints (Users & Ratings)
-*To be implemented by team member*
+*There is an error of connection on neo4j sandbox.*
+ The credentials and mappings are correct but Sandbox refuses connection.
+ A similar error occurs with neo4j desktop.
+ Below is a resume of trials to solve the issue. Complete documentation of issue at `NEO4J_ISSUE.md`
+  - port 7687 is open and listening
+  - neo4j db exists with person (users) and movie
+  - Thanks to neo4j+s://, Neo4j activates SSL automatically
+  - URI, USER and PASSWORD in an uncommitted .env file all from Sandbox connection details tab.
 
 ### Mixed Endpoints (MongoDB + Neo4j)
 *To be implemented together*
