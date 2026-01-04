@@ -8,12 +8,12 @@
 
 ### Répartition du Travail
 
-| Partie | Responsable | Status |
-|--------|-------------|--------|
-| Backend MongoDB (Films) | Moi | ✅ 100% Complété |
-| Backend Neo4j (Utilisateurs) | Binôme | ⏳ En cours |
-| Frontend React | Équipe Frontend | ✅ 100% Complété |
-| Documentation | Moi | ✅ 100% Complété |
+| Partie | Responsable            | Status |
+|--------|------------------------|--------|
+| Backend MongoDB (Films) | Kabir Saleh I.         | ✅ 100% Complété |
+| Backend Neo4j (Utilisateurs) | Jouonang E.            | ⏳ En cours |
+| Frontend React | Kwegueng M. & Yimga S. | ✅ 100% Complété |
+| Documentation | Kabir Saleh I.         | ✅ 100% Complété |
 
 ---
 
