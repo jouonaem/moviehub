@@ -1,14 +1,19 @@
 from neo4j import GraphDatabase
 import os
-
+print(os.getenv("NEO4J_PASSWORD"))
 class Neo4jConnection:
     def __init__(self):
-        self.uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
+        self.uri = os.getenv(
+            "NEO4J_URI",
+            "bolt://3.84.190.157:7687"
+        )
         self.user = os.getenv("NEO4J_USER", "neo4j")
-        self.password = os.getenv("NEO4J_PASSWORD", "password")
+        self.password = os.getenv("space-mat-networks")
 
         self.driver = GraphDatabase.driver(
-            self.uri, auth=(self.user, self.password)
+            self.uri,
+            auth=(self.user, self.password),
+            encrypted=False
         )
 
     def close(self):
