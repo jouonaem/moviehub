@@ -1,12 +1,9 @@
-from flask import Blueprint
-users_bp = Blueprint('users', __name__, url_prefix='/users')
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from app.services.user_service import (
     get_users_who_rated_movie,
     get_user_details
 )
-
-users_bp = Blueprint("users", __name__)
+users_bp = Blueprint('users', __name__, url_prefix='/users')
 
 @users_bp.route("/rated/<movie_name>", methods=["GET"])
 def users_who_rated(movie_name):
