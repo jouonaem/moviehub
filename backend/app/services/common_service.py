@@ -2,6 +2,11 @@
 Service pour les opérations communes entre MongoDB et Neo4j
 """
 from app.services.movie_service import get_all_movie_titles
+from app.config.neo4j_client import get_neo4j_conn
+
+def get_all_neo4j_movies():
+    conn = get_neo4j_conn()
+    return conn.query("MATCH (m:Movie) RETURN m")
 
 
 def get_mongodb_movie_titles():

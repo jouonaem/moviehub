@@ -7,7 +7,8 @@ load_dotenv()
 
 class Neo4jConnection:
     def __init__(self):
-        self.uri = os.getenv("NEO4J_URI")
+        #self.uri = os.getenv("NEO4J_URI")
+        self.uri = "bolt+s://095d73d918869d5522f388073910c56d.neo4jsandbox.com:7687"
         self.user = os.getenv("NEO4J_USER")
         self.password = os.getenv("NEO4J_PASSWORD")
 
@@ -50,7 +51,14 @@ class Neo4jConnection:
 
 
 # Instance globale à utiliser dans le projet
-neo4j_conn = Neo4jConnection()
+neo4j_conn = None
+
+def get_neo4j_conn():
+    global neo4j_conn
+    if neo4j_conn is None:
+        neo4j_conn = Neo4jConnection()
+    return neo4j_conn
+
 
 # Test rapide
 if __name__ == "__main__":
