@@ -8,7 +8,7 @@ class Neo4jConnection:
             "bolt://3.84.190.157:7687"
         )
         self.user = os.getenv("NEO4J_USER", "neo4j")
-        self.password = os.getenv("space-mat-networks")
+        self.password = os.getenv("NEO4J_PASSWORD")
 
         self.driver = GraphDatabase.driver(
             self.uri,
