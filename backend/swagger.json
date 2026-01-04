@@ -1,0 +1,530 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "MovieHub API",
+    "description": "API REST pour gérer des films (MongoDB) et des utilisateurs/notes (Neo4j)",
+    "version": "1.0.0",
+    "contact": {
+      "name": "MovieHub Team"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:5000",
+      "description": "Serveur de développement local"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Movies (MongoDB)",
+      "description": "Gestion des films via MongoDB"
+    },
+    {
+      "name": "Users (Neo4j)",
+      "description": "Gestion des utilisateurs et notes via Neo4j"
+    },
+    {
+      "name": "Stats",
+      "description": "Statistiques croisées MongoDB + Neo4j"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Health check",
+        "description": "Vérifie que l'API est en ligne",
+        "responses": {
+          "200": {
+            "description": "API en ligne",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Bienvenue sur MovieHub API"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/movies/": {
+      "get": {
+        "tags": ["Movies (MongoDB)"],
+        "summary": "Lister tous les films",
+        "description": "Récupère la liste complète des films depuis MongoDB",
+        "responses": {
+          "200": {
+            "description": "Liste des films",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Movie"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Movies (MongoDB)"],
+        "summary": "Créer un nouveau film",
+        "description": "Ajoute un nouveau film dans MongoDB",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MovieInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Film créé avec succès",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Données manquantes ou invalides"
+          }
+        }
+      }
+    },
+    "/movies/search": {
+      "get": {
+        "tags": ["Movies (MongoDB)"],
+        "summary": "Rechercher des films",
+        "description": "Recherche des films par titre, acteur ou requête générale",
+        "parameters": [
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Recherche générale (titre puis acteur)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "description": "Recherche par titre exact",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "actor",
+            "in": "query",
+            "description": "Recherche par nom d'acteur",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Résultats de la recherche",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Movie"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Paramètres manquants"
+          },
+          "404": {
+            "description": "Aucun résultat trouvé"
+          }
+        }
+      }
+    },
+    "/movies/{identifier}": {
+      "get": {
+        "tags": ["Movies (MongoDB)"],
+        "summary": "Obtenir un film spécifique",
+        "description": "Récupère un film par son ID MongoDB ou son titre",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "ID MongoDB ou titre du film",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Film trouvé",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Film introuvable"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Movies (MongoDB)"],
+        "summary": "Mettre à jour un film",
+        "description": "Met à jour les informations d'un film (titre dans l'URL)",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Titre du film à mettre à jour",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MovieUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Film mis à jour",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Movie"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Film introuvable"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Movies (MongoDB)"],
+        "summary": "Supprimer un film",
+        "description": "Supprime un film de la base de données",
+        "parameters": [
+          {
+            "name": "identifier",
+            "in": "path",
+            "required": true,
+            "description": "Titre du film à supprimer",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Film supprimé avec succès"
+          },
+          "404": {
+            "description": "Film introuvable"
+          }
+        }
+      }
+    },
+    "/movies/titles": {
+      "get": {
+        "tags": ["Movies (MongoDB)"],
+        "summary": "Obtenir tous les titres de films",
+        "description": "Récupère uniquement la liste des titres (utilisé pour les stats communes)",
+        "responses": {
+          "200": {
+            "description": "Liste des titres",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "example": ["Inception", "The Matrix", "Interstellar"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/ratings": {
+      "get": {
+        "tags": ["Users (Neo4j)"],
+        "summary": "Lister les utilisateurs qui ont noté un film",
+        "description": "Récupère la liste des utilisateurs ayant noté un film spécifique (Neo4j)",
+        "parameters": [
+          {
+            "name": "movie",
+            "in": "query",
+            "required": true,
+            "description": "Titre du film",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Liste des utilisateurs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserRating"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Film introuvable"
+          }
+        }
+      }
+    },
+    "/users/{username}": {
+      "get": {
+        "tags": ["Users (Neo4j)"],
+        "summary": "Obtenir les détails d'un utilisateur",
+        "description": "Récupère un utilisateur avec le nombre de films notés et la liste (Neo4j)",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "description": "Nom d'utilisateur",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Détails de l'utilisateur",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Utilisateur introuvable"
+          }
+        }
+      }
+    },
+    "/stats/common-movies": {
+      "get": {
+        "tags": ["Stats"],
+        "summary": "Nombre de films communs",
+        "description": "Retourne le nombre de films présents à la fois dans MongoDB et Neo4j",
+        "responses": {
+          "200": {
+            "description": "Statistiques des films communs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonMoviesStats"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Movie": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID MongoDB",
+            "example": "507f1f77bcf86cd799439011"
+          },
+          "title": {
+            "type": "string",
+            "description": "Titre du film",
+            "example": "Inception"
+          },
+          "year": {
+            "type": "integer",
+            "description": "Année de sortie",
+            "example": 2010
+          },
+          "actors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Liste des acteurs",
+            "example": ["Leonardo DiCaprio", "Marion Cotillard"]
+          },
+          "description": {
+            "type": "string",
+            "description": "Description du film",
+            "example": "Un voleur qui s'infiltre dans les rêves"
+          }
+        }
+      },
+      "MovieInput": {
+        "type": "object",
+        "required": ["title", "year", "actors"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Inception"
+          },
+          "year": {
+            "type": "integer",
+            "example": 2010
+          },
+          "actors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["Leonardo DiCaprio", "Marion Cotillard"]
+          },
+          "description": {
+            "type": "string",
+            "example": "Un voleur qui s'infiltre dans les rêves"
+          }
+        }
+      },
+      "MovieUpdate": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "integer",
+            "example": 2010
+          },
+          "actors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["Leonardo DiCaprio", "Marion Cotillard"]
+          },
+          "description": {
+            "type": "string",
+            "example": "Description mise à jour"
+          }
+        }
+      },
+      "UserRating": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "johndoe"
+          },
+          "rating": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5,
+            "example": 5
+          }
+        }
+      },
+      "UserDetails": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "johndoe"
+          },
+          "ratedMoviesCount": {
+            "type": "integer",
+            "example": 3
+          },
+          "ratedMovies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Inception"
+                },
+                "rating": {
+                  "type": "integer",
+                  "example": 5
+                },
+                "year": {
+                  "type": "integer",
+                  "example": 2010
+                }
+              }
+            }
+          }
+        }
+      },
+      "CommonMoviesStats": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "description": "Nombre de films communs",
+            "example": 42
+          },
+          "common_movies": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Liste des titres communs",
+            "example": ["Inception", "The Matrix"]
+          },
+          "mongodb_total": {
+            "type": "integer",
+            "description": "Total de films dans MongoDB",
+            "example": 100
+          },
+          "neo4j_total": {
+            "type": "integer",
+            "description": "Total de films dans Neo4j",
+            "example": 85
+          }
+        }
+      }
+    }
+  }
+}

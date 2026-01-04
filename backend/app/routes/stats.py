@@ -1,3 +1,6 @@
+from flask import Blueprint
+stats_bp = Blueprint('stats', __name__, url_prefix='/stats')
+
 from flask import Blueprint, jsonify
 from app.services.user_service import get_all_neo4j_movies
 
